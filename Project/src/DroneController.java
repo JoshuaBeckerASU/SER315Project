@@ -16,12 +16,12 @@ public class DroneController
         this.location = loc;
     }
     
-    public DroneController getInstence()
+    public DroneController getInstance()
     {
         return this;
     }
     
-    public DroneController newInstence(int x, int y, int z)
+    public static DroneController newInstance(int x, int y, int z)
     {
         return new DroneController(new Location(x,y,z));
     }

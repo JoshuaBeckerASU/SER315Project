@@ -3,7 +3,8 @@ import javax.swing.*;
 import java.awt.*;
 import components.*;
 import java.awt.GraphicsDevice;
-
+import java.io.*;
+import javax.imageio.*;
 
 public class MainWindow extends JFrame
 {
@@ -14,6 +15,7 @@ public class MainWindow extends JFrame
     private ControllerPanel m_Controller_P;
     private JPanel m_Inner_P, m_LargeScreen_P, m_SmallScreen_P;
     private int scrWidth, scrHeight;
+    private DroneController m_DrnCtrl;
     public MainWindow(String title)
     {
         	// Obtain window dimensions
@@ -25,6 +27,8 @@ public class MainWindow extends JFrame
 		createComponents();
 		designComponents();
 		addComponents();
+        
+        init();
     }
     
     public void createComponents()
@@ -73,4 +77,48 @@ public class MainWindow extends JFrame
         this.add(m_Main_P);
         this.setLocation(0,0);
     }
+    
+    private void init()
+    {
+        m_DrnCtrl = DroneController.newInstance(0,0,10);
+        JLabel label = new JLabel();
+        Graphics g = this.getGraphics();
+        //g.drawImage(loadGameImage("ball.png", 20,20), 100,100, this);
+        
+        
+        
+    }
+    
+    public void paint(Graphics g){
+        Image img = createImage(getWidth(), getHeight());
+        Graphics gr = img.getGraphics();
+        draw(gr);
+        g.drawImage(img, 0, 0, this);
+    }
+
+    public void draw(Graphics g){
+        super.paint(g);
+        g.drawRect(100, 100, 200, 100);
+        g.drawImage(loadGameImage("ball.png",40,40), 100,100, this);
+    }
+    
+	private Image loadGameImage(String name, int w, int h)
+	{
+		//String path = "";
+		//path = System.getProperty("user.dir");
+		//path = path.replace('\\','/');
+		//path = path.replaceAll("Source", "Assets/GUI/GameImages/" + name);
+		Image img;
+		
+		try 
+		{
+			img = ImageIO.read(new File(name));
+			img = img.getScaledInstance(w, h,  java.awt.Image.SCALE_AREA_AVERAGING);
+			return img;
+		} catch (IOException ex) 
+		{
+			System.out.println("FIle Not Found\nFile Path: " + name);System.exit(0);
+		}
+		return null;
+	}
 }
